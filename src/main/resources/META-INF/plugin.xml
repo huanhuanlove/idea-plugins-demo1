@@ -15,6 +15,7 @@
         <notificationGroup id="notification.event01Notification" displayType="BALLOON" key="notification.group.name"/>
     </extensions>
 
+    <!--  action注册  -->
     <actions>
         <action id="com.kang.ApplicationAction" class="com.kang.ApplicationAction">
             <add-to-group group-id="ToolsMenu" anchor="first"/>

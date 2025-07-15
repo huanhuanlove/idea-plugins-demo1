@@ -7,6 +7,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.ui.Messages;
+import com.kang.i18n.MyBundle;
 
 public class ApplicationAction extends AnAction {
 
@@ -14,19 +15,20 @@ public class ApplicationAction extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         // 1. 弹窗
         Messages.showMessageDialog(
-                "Hello from IntelliJ IDEA Plugin!",
-                "Demo Popup",
+                MyBundle.message("popup.message"),
+                MyBundle.message("popup.title"),
                 Messages.getInformationIcon()
         );
 
         // 2. 通知（右下角气泡）
-        NotificationGroupManager groupManager = NotificationGroupManager.getInstance();
-        NotificationGroup group = groupManager.getNotificationGroup("notification.event01Notification");
-        Notification notification = group.createNotification(
-                "Demo Notification",
-                "Your action has been executed successfully!",
-                NotificationType.INFORMATION
-        );
-        notification.notify(e.getProject());
+        NotificationGroup group = NotificationGroupManager.getInstance().getNotificationGroup("notification.event01Notification");
+        if (group != null) {
+            Notification notification = group.createNotification(
+                    MyBundle.message("notification.title"),
+                    MyBundle.message("notification.content"),
+                    NotificationType.INFORMATION
+            );
+            notification.notify(e.getProject());
+        }
     }
 }
