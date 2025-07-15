@@ -9,7 +9,12 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-<!--        <toolWindow factoryClass="com.github.huanhuanlove.ideapluginsdemo1.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
-<!--        <postStartupActivity implementation="com.github.huanhuanlove.ideapluginsdemo1.startup.MyProjectActivity" />-->
+        <notificationGroup id="notification.event01Notification" displayType="BALLOON" key="demo.notification.group.name"/>
     </extensions>
+
+    <actions>
+        <action id="com.kang.ApplicationAction" class="com.kang.ApplicationAction" text="弹窗功能" description="在 Tools 菜单下添加一个功能">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
