@@ -33,7 +33,7 @@ dependencies {
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         // 本地 Idea 路径
-        local("/Applications/IntelliJ IDEA 2.app/Contents")
+        local("D:\\idea\\ideaIU-2025.1.3.win")
         // 自动下载 Idea 调试
         // create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
 
