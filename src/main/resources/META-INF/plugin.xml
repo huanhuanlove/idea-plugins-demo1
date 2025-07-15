@@ -1,15 +1,23 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.huanhuanlove.ideapluginsdemo1</id>
-    <name>idea-plugins-demo1</name>
-    <vendor>huanhuanlove</vendor>
+    <!--  id：插件的唯一标识，发布后不可修改。name：显示在插件市场的名称。vendor：插件作者  -->
+    <id>com.kang.idea.tools</id>
+    <name>Develop Assistant</name>
+    <vendor>Kang</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
+    <!--  多语言配置文件  -->
     <resource-bundle>messages.MyBundle</resource-bundle>
 
+    <!--  消息通知等功能注册  -->
     <extensions defaultExtensionNs="com.intellij">
-<!--        <toolWindow factoryClass="com.github.huanhuanlove.ideapluginsdemo1.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
-<!--        <postStartupActivity implementation="com.github.huanhuanlove.ideapluginsdemo1.startup.MyProjectActivity" />-->
+
     </extensions>
+
+    <!--  actions功能注册  -->
+    <actions>
+
+    </actions>
+
 </idea-plugin>
