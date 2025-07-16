@@ -1,0 +1,1 @@
+# 图标资源（PNG/SVG），通过 IconManager 加载
