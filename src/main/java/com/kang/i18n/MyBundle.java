@@ -7,6 +7,10 @@ import org.jetbrains.annotations.PropertyKey;
 
 /**
  * 创建单例国际化语言获取类
+ *
+ * 使用示例：
+ *      1.MyBundle.message("random.num");
+ *      2.MyBundle.message("random.label", 5);
  */
 public final class MyBundle extends DynamicBundle {
 

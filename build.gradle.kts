@@ -2,58 +2,57 @@ import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
+// 插件声明区
 plugins {
     id("java") // Java support
     alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
-    alias(libs.plugins.changelog) // Gradle Changelog Plugin
-    alias(libs.plugins.qodana) // Gradle Qodana Plugin
-    alias(libs.plugins.kover) // Gradle Kover Plugin
+    alias(libs.plugins.changelog) // changelog 管理
 }
 
+// 插件信息，唯一标识和版本号
 group = providers.gradleProperty("pluginGroup").get()
 version = providers.gradleProperty("pluginVersion").get()
 
-// Configure project's dependencies
+// 仓库配置，先走国内镜像加速仓库没有再走中央仓库
 repositories {
     mavenLocal()
     maven("https://maven.aliyun.com/repository/public")
     mavenCentral()
 
-    // IntelliJ Platform Gradle Plugin Repositories Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-repositories-extension.html
     intellijPlatform {
         defaultRepositories()
     }
 }
 
-// Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
+// 依赖配置 - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
-    // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
+    // Gradle配置 - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         // 本地 Idea 路径
         local("D:\\idea\\ideaIU-2025.1.3.win")
         // 自动下载 Idea 调试
         // create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
 
-        // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
+        // 配置来自：gradle.properties
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
 
-        // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file for plugin from JetBrains Marketplace.
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
 
         testFramework(TestFrameworkType.Platform)
     }
 }
 
-// Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
+// 核心配置 - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
 intellijPlatform {
     pluginConfiguration {
+        // 插件元数据，分别是：插件市场名字、插件版本号、插件描述、新版本变更日志
         name = providers.gradleProperty("pluginName")
         version = providers.gradleProperty("pluginVersion")
 
-        // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
+        // 插件描述。从 README.md 中截取 <!-- Plugin description --> 与 <!-- Plugin description end --> 之间的 Markdown 并转成 HTML
         description = providers.fileContents(layout.projectDirectory.file("README.md")).asText.map {
             val start = "<!-- Plugin description -->"
             val end = "<!-- Plugin description end -->"
@@ -66,8 +65,8 @@ intellijPlatform {
             }
         }
 
-        val changelog = project.changelog // local variable for configuration cache compatibility
-        // Get the latest available change notes from the changelog file
+        // 新版本变更日志，显示在插件市场的「What’s New」面板，使用CHANGELOG.md文件内当前版本号的改变内容
+        val changelog = project.changelog
         changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
             with(changelog) {
                 renderItem(
@@ -79,12 +78,14 @@ intellijPlatform {
             }
         }
 
+        // 声明插件兼容的 IDE 构建号区间
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
             untilBuild = providers.gradleProperty("pluginUntilBuild")
         }
     }
 
+    // 签名 & 发布（环境变量）
     signing {
         certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
         privateKey = providers.environmentVariable("PRIVATE_KEY")
@@ -99,40 +100,65 @@ intellijPlatform {
         channels = providers.gradleProperty("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
 
+    //  兼容性检查
     pluginVerification {
         ides {
             recommended()
         }
     }
+
+    // 节省构建时间，仅调试时生效，打包发布无需修改没有影响
+    buildSearchableOptions = false   // 跳过 searchable-options节省构建时间
+    autoReload = true              // 热重载插件
 }
 
-// Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
+// changelog 插件，自动把 CHANGELOG.md 渲染成 HTML 写进 plugin.xml - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
-    groups.empty()
+    // 清空分组或设置常用分组，都不设置会使用默认分组
+    // groups.empty()
+     groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
+    // 默认分组：listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security")
+        // Added	新增功能	新特性、新模块
+        // Changed	已有功能的变更	API 调整、行为变化
+        // Deprecated	已弃用的功能	即将移除的接口
+        // Removed	已移除的功能	破坏性变更
+        // Fixed	Bug 修复	修复崩溃、逻辑错误
+        // Security	安全相关	漏洞修复、依赖升级
+
     repositoryUrl = providers.gradleProperty("pluginRepositoryUrl")
+    // 在 CHANGELOG.md 顶部自动添加一个新的 [Unreleased] 空节
+    keepUnreleasedSection.set(true)
+    combinePreReleases.set(true)
 }
 
-// Configure Gradle Kover Plugin - read more: https://github.com/Kotlin/kotlinx-kover#configuration
-kover {
-    reports {
-        total {
-            xml {
-                onCheck = true
-            }
-        }
+// java配置
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(providers.gradleProperty("jdk").get()) // 用哪个版本 JDK 编译
     }
+    withSourcesJar()      // 发布时附带源码
+    withJavadocJar()      // 发布时附带 Javadoc
 }
 
+// tasks 区，保证 gradlew 版本一致，发布前自动补 changelog
 tasks {
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
 
+    // 三级流水线（build → sign → verify → publish），发布前强制重新打包 & 签名
+    signPlugin {
+        dependsOn(buildPlugin)
+    }
+    verifyPlugin {
+        dependsOn(signPlugin)
+    }
     publishPlugin {
         dependsOn(patchChangelog)
     }
 }
 
+// 运行 UI 自动化测试
 intellijPlatformTesting {
     runIde {
         register("runIdeForUiTests") {

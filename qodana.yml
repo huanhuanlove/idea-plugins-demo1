@@ -1,6 +1,8 @@
 # Qodana configuration:
 # https://www.jetbrains.com/help/qodana/qodana-yaml.html
 
+# 发布时告诉 Qodana 用什么镜像分析（linter），扫描哪些代码（exclude），用什么规则集（profile），指定 JDK 版本（projectJDK）
+
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2024.3
 projectJDK: "21"
