@@ -13,7 +13,9 @@
     <!--  消息通知等功能注册  -->
     <extensions defaultExtensionNs="com.intellij">
         <!--  通知  -->
-        <notificationGroup id="notification.event01Notification" displayType="BALLOON" key="notification.group.name"/>
+        <notificationGroup id="notification.event01Notification"
+                           displayType="BALLOON"
+                           key="notification.group.name"/>
 
         <!--  工具栏  -->
         <toolWindow id="开发助手"

@@ -1,7 +1,7 @@
-package com.kang.service.base.impl;
+package com.kang.project.impl;
 
 import com.intellij.openapi.project.Project;
-import com.kang.service.base.IBaseExecuteProject;
+import com.kang.project.IBaseExecuteProject;
 
 /**
  * 项目相关操作 {@link com.intellij.openapi.project.Project}

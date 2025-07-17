@@ -1,4 +1,4 @@
-package com.kang.service.base;
+package com.kang.project;
 
 import com.intellij.openapi.project.Project;
 

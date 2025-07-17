@@ -6,10 +6,8 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import com.kang.service.base.IBaseExecuteProject;
-import com.kang.service.base.IBaseExecuteToolWindow;
-import com.kang.service.base.impl.BaseExecuteProjectImpl;
-import com.kang.service.base.impl.BaseExecuteToolWindowImpl;
+import com.kang.project.IBaseExecuteProject;
+import com.kang.project.impl.BaseExecuteProjectImpl;
 import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,11 +73,10 @@ public abstract class BaseToolWindow implements ToolWindowFactory {
      */
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        // 配置一个默认值，每个 toolWindow 必须重写这个方法
         JPanel panel = new JPanel();
         panel.add(new JBLabel("Hello from MyToolWindow!"));
 
-        Content content = ContentFactory.getInstance().createContent(panel, "", false);
+        Content content = ContentFactory.getInstance().createContent(panel, "开发助手", false);
         toolWindow.getContentManager().addContent(content);
     }
 
@@ -108,11 +105,14 @@ public abstract class BaseToolWindow implements ToolWindowFactory {
     }
 
     /**
-     * 工具窗口相关操作 - BaseExecuteToolWindowImpl基础实现不要修改 - 需要时可重写
+     * 创建工具窗口
      *
-     * @return IBaseExecuteToolWindow
+     * @param toolWindow 工具窗口
+     * @param panel 窗口内布局
+     * @param title 窗口 Tab 标题
      */
-    public IBaseExecuteToolWindow getExecuteToolWindow() {
-        return new BaseExecuteToolWindowImpl();
+    public void createUI(@NotNull ToolWindow toolWindow, @NotNull JPanel panel, String title) {
+        Content content = ContentFactory.getInstance().createContent(panel, title, false);
+        toolWindow.getContentManager().addContent(content);
     }
 }
