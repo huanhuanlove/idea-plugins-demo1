@@ -11,14 +11,14 @@ import com.kang.i18n.MyBundle;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 描述
+ * 示例Action
  *
  * @author Kang
  */
 public class Demo1Action extends AnAction {
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
         // 1. 弹窗
         Messages.showMessageDialog(
                 MyBundle.message("popup.message"),
@@ -34,7 +34,7 @@ public class Demo1Action extends AnAction {
                     MyBundle.message("notification.content"),
                     NotificationType.INFORMATION
             );
-            notification.notify(e.getProject());
+            notification.notify(event.getProject());
         }
     }
 }
