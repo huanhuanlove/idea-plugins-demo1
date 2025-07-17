@@ -12,12 +12,18 @@
 
     <!--  消息通知等功能注册  -->
     <extensions defaultExtensionNs="com.intellij">
+        <!--  通知  -->
+        <notificationGroup id="notification.event01Notification" displayType="BALLOON" key="notification.group.name"/>
+
+        <!--  工具栏  -->
 
     </extensions>
 
-    <!--  actions功能注册  -->
+    <!--  actions注册  -->
     <actions>
-
+        <action id="com.kang.ApplicationAction" class="com.kang.action.Demo1Action">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
     </actions>
 
 </idea-plugin>
