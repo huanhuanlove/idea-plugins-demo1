@@ -2,6 +2,7 @@ package com.kang.toolwindow;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.kang.i18n.MyBundle;
 import com.kang.panel.DemoPanel;
 import com.kang.toolwindow.base.BaseToolWindow;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,7 @@ public class Demo1ToolWindow extends BaseToolWindow {
         getExecuteProject().preExecute(project);
 
         // 工具窗口UI绘制
-        createUI(toolWindow, new DemoPanel().createPanel(), "开发助手");
+        createUI(toolWindow, new DemoPanel().createPanel(), MyBundle.message("tab.title"));
     }
 
 }
