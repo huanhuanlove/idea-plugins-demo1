@@ -16,7 +16,10 @@
         <notificationGroup id="notification.event01Notification" displayType="BALLOON" key="notification.group.name"/>
 
         <!--  工具栏  -->
-
+        <toolWindow id="开发助手"
+                    anchor="right"
+                    icon="AllIcons.Toolwindows.ToolWindowBuild"
+                    factoryClass="com.kang.toolwindow.Demo1ToolWindow"/>
     </extensions>
 
     <!--  actions注册  -->
