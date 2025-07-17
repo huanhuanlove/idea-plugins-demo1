@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.kang.panel.base.IBasePanel;
 import com.kang.project.IBaseExecuteProject;
 import com.kang.project.impl.BaseExecuteProjectImpl;
 import kotlin.coroutines.Continuation;
@@ -108,7 +109,7 @@ public abstract class BaseToolWindow implements ToolWindowFactory {
      * 创建工具窗口
      *
      * @param toolWindow 工具窗口
-     * @param panel 窗口内布局
+     * @param panel 窗口内布局，具体实现重写JPanel即可，其他无需改变。子类均继承自 {@link IBasePanel}
      * @param title 窗口 Tab 标题
      */
     public void createUI(@NotNull ToolWindow toolWindow, @NotNull JPanel panel, String title) {
