@@ -12,7 +12,10 @@
 
     <!--  消息通知等功能注册  -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <toolWindow id="开发助手"
+                    anchor="right"
+                    icon="AllIcons.Toolwindows.ToolWindowBuild"
+                    factoryClass="com.kang.toolwindow.Demo1ToolWindow"/>
     </extensions>
 
     <!--  actions功能注册  -->
