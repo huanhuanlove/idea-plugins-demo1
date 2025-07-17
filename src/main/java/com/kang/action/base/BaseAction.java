@@ -1,28 +1,41 @@
-package com.kang.action;
+package com.kang.action.base;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.Messages;
-import com.kang.action.base.BaseAction;
-import com.kang.i18n.MyBundle;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 示例Action
+ * Action基类
  *
  * @author Kang
  */
-public class Demo1Action extends BaseAction {
+public abstract class BaseAction extends AnAction {
 
+    /**
+     * action需要执行的逻辑
+     *
+     * @param event 事件
+     */
     @Override
+    public void actionPerformed(@NotNull AnActionEvent event) {
+        executeAction(event);
+    }
+
+    /**
+     * 默认实现action需要执行的逻辑 - 必须重写
+     *
+     * @param event 事件
+     */
     public void executeAction(@NotNull AnActionEvent event) {
         // 1. 弹窗
         Messages.showMessageDialog(
-                MyBundle.message("popup.message"),
-                MyBundle.message("popup.title"),
+                "A message from a pop-up window, please check it out！",
+                "演示弹窗",
                 Messages.getInformationIcon()
         );
 
@@ -30,8 +43,8 @@ public class Demo1Action extends BaseAction {
         NotificationGroup group = NotificationGroupManager.getInstance().getNotificationGroup("notification.event01Notification");
         if (group != null) {
             Notification notification = group.createNotification(
-                    MyBundle.message("notification.title"),
-                    MyBundle.message("notification.content"),
+                    "Notification",
+                    "The operation has been successfully executed!",
                     NotificationType.INFORMATION
             );
             notification.notify(event.getProject());
