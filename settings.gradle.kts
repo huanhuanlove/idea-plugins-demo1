@@ -1,6 +1,6 @@
 // 根据 gradle.properties 配置的版本自动下载jdk
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 // 根项目名称，可自定义无约束。Gradle 生成的 jar/目录名都会用这个名字，IDEA 侧边栏也显示这个名字
