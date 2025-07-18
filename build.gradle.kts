@@ -26,6 +26,7 @@ repositories {
 
 // 依赖配置 - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
+    implementation(libs.guava)
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
